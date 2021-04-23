@@ -26,6 +26,51 @@ class Parser:
 
         return data_list
 
+    def find_sportnewsam(self):
+        data_list = []
+        url = 'https://sport.news.am'
+        link = 'https://sport.news.am/arm/'
+        http_pool = urllib3.connection_from_url(link)
+        r = http_pool.urlopen('GET', link)
+        html = r.data.decode('utf-8')
+        soup = bs4(html, 'html.parser')
+        arg_main = soup.find_all("div", {'class': 'radius4 col p_30'})
+        arg_second = bs4(str(arg_main), 'html.parser')
+        arg_last = arg_second.find_all('a', href=True)
+        i = 1
+        for arg in arg_last:
+            if i % 2 == 0:
+                if arg.text != '':
+                    txt = arg.text
+                    txt.strip()
+                    link = url + str(arg['href'])
+                    data_list.append([link, txt])
+            i += 1
+
+        return data_list
+
+    def find_nytimesSport(self):
+        url = 'https://nytimes.com'
+        site_url = 'https://www.nytimes.com/section/sports?auth=link-dismiss-google1tap'
+        data_list = []
+        http_pool = urllib3.connection_from_url(site_url)
+        request = http_pool.urlopen('GET', site_url)
+        html = request.data.decode('utf-8')
+        soup = bs4(html, 'html.parser')
+        arg_main = soup.find_all("div", {'class': 'css-zk12ih eidyr0c0'})
+        arg_second = bs4(str(arg_main), 'html.parser')
+        arg_last = arg_second.find_all('ol', {'class': 'css-11jjg ekkqrpp2'})
+        arg = bs4(str(arg_last), 'html.parser')
+        arg_back = arg.find_all('a', href=True)
+        for ar in arg_back:
+            if ar.text:
+                txt = ar.text
+                link = url + str(ar['href'])
+                if txt != '':
+                    data_list.append([link, txt])
+
+        return data_list
+
     def find_nytimes(self):
         url = 'https://nytimes.com'
         site_url = 'https://www.nytimes.com/section/world'
@@ -92,6 +137,31 @@ class Parser:
         for ar in arg:
             if ar.text:
                 txt = ar.text
+                txt = txt.strip()
+                link = url + str(ar['href'])
+                if txt != '':
+                    data_list.append([link, txt])
+
+        return data_list
+
+    def find_lurersport(self):
+        url = 'https://lurer.com'
+        site_url = 'https://lurer.com/?cat=16&l=am'
+        data_list = []
+        http_pool = urllib3.connection_from_url(site_url)
+        request = http_pool.urlopen('GET', site_url)
+        html = request.data.decode('utf-8')
+        soup = bs4(html, 'html.parser')
+        arg_main = soup.find_all("div", {'class': 'mainSilver clearfix'})
+        arg_second = bs4(str(arg_main), 'html.parser')
+        arg_last = arg_second.find_all('div', {'class': 'mainCenterWrapperLeft clearfix'})
+        arg = bs4(str(arg_last), 'html.parser')
+        arg_back = arg.find_all('div', {'class': 'catBox clearfix'})
+        arg_second = bs4(str(arg_back), 'html.parser')
+        arg = arg_second.find_all('a', href=True)
+        for ar in arg:
+            if ar.text:
+                txt = ar.text[22:]
                 txt = txt.strip()
                 link = url + str(ar['href'])
                 if txt != '':

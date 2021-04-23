@@ -3,23 +3,23 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 start_markup = InlineKeyboardMarkup(inline_keyboard=[
     [
-        InlineKeyboardButton('News menu', callback_data='menu')
+        InlineKeyboardButton('📃 Menu', callback_data='menu')
     ]
 ])
 
 
 news_menu = InlineKeyboardMarkup(inline_keyboard=[
     [
-        InlineKeyboardButton('News', callback_data='news')
+        InlineKeyboardButton('🗞 News', callback_data='news')
     ],
     [
-        InlineKeyboardButton('Sport', callback_data='sport')
+        InlineKeyboardButton('⚽ Sport', callback_data='sport')
     ],
     [
-        InlineKeyboardButton('Currency', callback_data='curr')
+        InlineKeyboardButton('💱 Currency', callback_data='curr')
     ],
     [
-        InlineKeyboardButton('<< Back', callback_data='back1')
+        InlineKeyboardButton('↩ Back', callback_data='back1')
     ]
 
 ])
@@ -27,54 +27,51 @@ news_menu = InlineKeyboardMarkup(inline_keyboard=[
 
 news = InlineKeyboardMarkup(inline_keyboard=[
     [
-        InlineKeyboardButton('News.am', callback_data='news.am')
+        InlineKeyboardButton('News.am 📃', callback_data='news.am')
     ],
     [
-        InlineKeyboardButton('Tert.am', callback_data='tert')
+        InlineKeyboardButton('Tert.am 📃', callback_data='tert')
     ],
     [
-        InlineKeyboardButton('Times', callback_data='times')
+        InlineKeyboardButton('NY Times 📃', callback_data='times')
     ],
     [
-        InlineKeyboardButton('CNN', callback_data='cnn')
+        InlineKeyboardButton('Lurer.am 📃', callback_data='cnn')
     ],
     [
-        InlineKeyboardButton('<< Back', callback_data='back2')
+        InlineKeyboardButton('↩ Back', callback_data='back2')
     ]
 ])
 
 
 sport = InlineKeyboardMarkup(inline_keyboard=[
     [
-        InlineKeyboardButton('News.am', callback_data='news.am')
+        InlineKeyboardButton('News.am ⚽', callback_data='newssport')
     ],
     [
-        InlineKeyboardButton('Tert.am', callback_data='tert')
+        InlineKeyboardButton('NY Times 🏀', callback_data='timessport')
     ],
     [
-        InlineKeyboardButton('Times', callback_data='times')
+        InlineKeyboardButton('Lurer 🏈', callback_data='cnnsport')
     ],
     [
-        InlineKeyboardButton('CNN', callback_data='cnn')
-    ],
-    [
-        InlineKeyboardButton('<< Back', callback_data='back2')
+        InlineKeyboardButton('↩ Back', callback_data='back2')
     ]
 ])
 
 
 curr = InlineKeyboardMarkup(inline_keyboard=[
     [
-        InlineKeyboardButton('USD', callback_data='usd')
+        InlineKeyboardButton('💵 USD', callback_data='usd')
     ],
     [
-        InlineKeyboardButton('EURO', callback_data='euro')
+        InlineKeyboardButton('💶 EURO', callback_data='euro')
     ],
     [
-        InlineKeyboardButton('RUB', callback_data='rub')
+        InlineKeyboardButton('💴 RUB', callback_data='rub')
     ],
     [
-        InlineKeyboardButton('<< Back', callback_data='back2')
+        InlineKeyboardButton('↩ Back', callback_data='back2')
     ]
 ])
 
@@ -93,6 +90,25 @@ def convert_data_mdata(data):
     return markup
 
 
+def returnMarkupSport(data, name: str):
+    markup = InlineKeyboardMarkup()
+    max = 9
+    callback = []
+    i = 0
+    for ar in data:
+        if max < 0:
+            break
+        butt = InlineKeyboardButton(ar[0], callback_data=name+'{}'.format(str(i)))
+        callback.append(name+'{}'.format(str(i)))
+        markup.add(butt)
+        i = i+1
+        max -= 1
+    butt = InlineKeyboardButton('↩ Back', callback_data='back5')
+    markup.add(butt)
+    da = [markup, callback]
+    return da
+
+
 def returnMarkup(data, name: str):
     markup = InlineKeyboardMarkup()
     max = 9
@@ -106,32 +122,10 @@ def returnMarkup(data, name: str):
         markup.add(butt)
         i = i+1
         max -= 1
-    butt = InlineKeyboardButton('<< Back', callback_data='back2')
+    butt = InlineKeyboardButton('↩ Back', callback_data='back4')
     markup.add(butt)
     da = [markup, callback]
     return da
 
 
-def reformMarkup(markup):
-    max = 1
-    number = 0
-    markups = []
-    markind = len(markup)/max
-    while markind > 0:
-        markup = InlineKeyboardMarkup()
-        for i in range(0, 5):
-            markup.add(markup[number])
-        if max == 1:
-            main = InlineKeyboardButton('Main', callback_data='back1')
-            butt = InlineKeyboardButton('>>', callback_data='next{}'.format(str(max)))
-            markup.add(main, butt)
-        else:
-            butt1 = InlineKeyboardButton('<<', callback_data='right{}'.format(str(max)))
-            main = InlineKeyboardButton('Main', callback_data='back1')
-            butt = InlineKeyboardButton('>>', callback_data='left{}'.format(str(max)))
-            markup.add(butt1, main, butt)
-        max += 1
-        markups.append(markup)
-        markind = markind - 1
-    return markups
 
